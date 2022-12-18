@@ -43,6 +43,50 @@ const userSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    idade: {
+      type: Number,
+      required: true,
+    },
+    workouts: [
+      {
+        name: {
+          type: String,
+          required: true,
+        },
+        description: {
+          type: String,
+          required: true,
+        },
+        exercises: [
+          {
+            name: {
+              type: String,
+              required: true,
+            },
+            bodyPart: {
+              type: String,
+              required: true,
+            },
+            target: {
+              type: String,
+              required: true,
+            },
+            equipment: {
+              type: String,
+              required: true,
+            },
+            animatedGif: {
+              type: String,
+              required: true,
+            },
+          },
+        ],
+        reps: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

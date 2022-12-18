@@ -8,7 +8,7 @@ const getAllUserActivities = asyncHandler(async (req, res) => {
   const { id } = req.body;
 
   const user = await User.findById(id).exec();
-
+  
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }

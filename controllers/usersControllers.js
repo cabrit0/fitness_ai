@@ -17,7 +17,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
 // @route  POST /users
 // @Access Private
 const createNewUser = asyncHandler(async (req, res) => {
-  const { username, password, roles, altura, peso, sexo } = req.body;
+  const { username, password, roles, altura, peso, sexo, idade } = req.body;
 
   //confirm data
   if (
@@ -27,7 +27,8 @@ const createNewUser = asyncHandler(async (req, res) => {
     !roles.length ||
     !altura ||
     !peso ||
-    !sexo
+    !sexo ||
+    !idade
   ) {
     return res.status(400).json({ message: "All fields must be provided" });
   }
@@ -49,6 +50,7 @@ const createNewUser = asyncHandler(async (req, res) => {
     altura,
     peso,
     sexo,
+    idade,
   };
 
   //create user
@@ -66,8 +68,8 @@ const createNewUser = asyncHandler(async (req, res) => {
 // @route  PATCH /users
 // @Access Private
 const updateUser = asyncHandler(async (req, res) => {
-  const { id, username, roles, active, password } = req.body;
-  //console.log(id, username, roles, active);
+  const { id, username, roles, active, password, workouts } = req.body;
+  console.log(id, username, roles, active);
 
   //confirm data
   if (

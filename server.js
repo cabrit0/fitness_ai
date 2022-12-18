@@ -25,7 +25,11 @@ app.use("/", express.static(path.join(__dirname, "public")));
 
 app.use("/", require("./routes/root"));
 app.use("/api/v1/users", require("./routes/userRoutes"));
-app.use("/api/v1/user/activities", require('./routes/activityRoutes'))
+app.use("/api/v1/user/activities", require("./routes/activityRoutes"));
+app.use(
+  "/api/v1/user/workouts&exercises",
+  require("./routes/workoutsExercisesRoutes")
+);
 
 app.all("*", (req, res) => {
   res.status(404);
