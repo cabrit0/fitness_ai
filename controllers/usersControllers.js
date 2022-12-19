@@ -68,8 +68,8 @@ const createNewUser = asyncHandler(async (req, res) => {
 // @route  PATCH /users
 // @Access Private
 const updateUser = asyncHandler(async (req, res) => {
-  const { id, username, roles, active, password, workouts } = req.body;
-  console.log(id, username, roles, active);
+  const { id, username, roles, active, password, personalTrainer, sexo, peso, altura, idade, } = req.body;
+  console.log(req.body);
 
   //confirm data
   if (
@@ -100,6 +100,11 @@ const updateUser = asyncHandler(async (req, res) => {
   user.username = username;
   user.roles = roles;
   user.active = active;
+  user.personalTrainer = req.body.personalTrainer;
+  user.sexo = req.body.sexo;
+  user.peso = req.body.peso;
+  user.altura = req.body.altura;
+  user.idade = req.body.idade;
 
   if (password) {
     //hash password

@@ -1,6 +1,9 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/User");
 
+// @desc   Get all workouts
+// @route  GET /user/workouts&exercises
+// @Access Private
 const getAllWorkouts = asyncHandler(async (req, res) => {
   // Find the user by their ID
   const user = await User.findById(req.body.id);
@@ -10,6 +13,9 @@ const getAllWorkouts = asyncHandler(async (req, res) => {
   res.json(user.workouts);
 });
 
+// @desc   Create workout
+// @route  POST /user/workouts&exercises
+// @Access Private
 const createWorkout = asyncHandler(async (req, res) => {
   // Find the user by their ID
   const user = await User.findById(req.body.id);
@@ -23,6 +29,9 @@ const createWorkout = asyncHandler(async (req, res) => {
   res.json(user.workouts);
 });
 
+// @desc   Update exercise
+// @route  PATCH /user/workouts&exercises
+// @Access Private
 const updateExercise = asyncHandler(async (req, res) => {
   // Find the user by their ID
   const user = await User.findById(req.body.id);
@@ -35,23 +44,32 @@ const updateExercise = asyncHandler(async (req, res) => {
   if (!workout) {
     return res.status(404).send({ error: "Workout not found" });
   }
+  req.body.exercises.map((exerciseData) => {
+    // Find the exercise by its ID
+    const exercise = workout.exercises.find(
+      (exercise) => exercise.id === exerciseData.exerciseId
+    );
+    //console.log(req.body.exercises);
+    //console.log(exerciseData.exerciseId, workout.exercises.id, exercise);
 
-  // Find the exercise by its ID
-  const exercise = workout.exercises.id(req.body.exerciseId);
-  if (!exercise) {
-    return res.status(404).send({ error: "Exercise not found" });
-  }
+    // Update the exercise with the new data
+    exercise.name = exerciseData.name;
+    exercise.bodyPart = exerciseData.bodyPart;
+    exercise.target = exerciseData.target;
+    exercise.equipment = exerciseData.equipment;
+    exercise.animatedGif = exerciseData.animatedGif;
+  });
 
-  // Update the exercise with the new data
-  exercise.name = req.body.name;
-  exercise.bodyPart = req.body.bodyPart;
-  exercise.target = req.body.target;
-  exercise.equipment = req.body.equipment;
-  exercise.animatedGif = req.body.animatedGif;
+  // Save the user document
   await user.save();
-  res.json(exercise);
+
+  // Return the updated workout in the response
+  res.json(workout);
 });
 
+// @desc   Delete exercise
+// @route  Delete /user/workouts&exercises
+// @Access Private
 const deleteExercise = asyncHandler(async (req, res) => {
   // Find the user by their ID
   const user = await User.findById(req.body.id);
@@ -75,9 +93,36 @@ const deleteExercise = asyncHandler(async (req, res) => {
   res.json(exercise);
 });
 
+// @desc   Delete workout
+// @route  Delete /user/workouts&exercises/workouts/:workoutId
+// @Access Private
+const deleteWorkout = asyncHandler(async (req, res) => {
+  // Find the user by their ID
+  const user = await User.findById(req.body.id);
+  if (!user) {
+    return res.status(404).send({ error: "User not found" });
+  }
+
+  // Find the workout by its ID
+  const workout = user.workouts.id(req.body.workoutId);
+  if (!workout) {
+    return res.status(404).send({ error: "Workout not found" });
+  }
+
+  // Remove the workout from the user's workouts array
+  workout.remove();
+
+  // Save the user document
+  await user.save();
+
+  // Return the removed workout in the response
+  res.json(workout);
+});
+
 module.exports = {
   getAllWorkouts,
   createWorkout,
   updateExercise,
   deleteExercise,
+  deleteWorkout,
 };
