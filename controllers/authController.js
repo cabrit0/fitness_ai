@@ -7,27 +7,28 @@ const asyncHandler = require("express-async-handler");
 // @route  POST /auth
 // @access Public
 const login = asyncHandler(async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!username || !password) {
+  if (!email || !password) {
     return res.status(400).json({ message: "All fields are required" });
   }
+  console.log(email, password);
 
-  const foundUser = await User.findOne({ username: username }).exec();
+  const foundUser = await User.findOne({ email: email }).exec();
 
   //verification for the user existence and for if it's active or not
   if (!foundUser || !foundUser.active) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({ message: "Unauthorized1" });
   }
 
   const match = await bcrypt.compare(password, foundUser.password);
 
-  if (!match) return res.status(401).json({ message: "Unauthorized" });
+  if (!match) return res.status(401).json({ message: "Unauthorized2" });
 
   const accessToken = jwt.sign(
     {
       userInfo: {
-        username: foundUser.username,
+        email: foundUser.email,
         roles: foundUser.roles,
       },
     },
@@ -36,7 +37,7 @@ const login = asyncHandler(async (req, res) => {
   );
 
   const refreshToken = jwt.sign(
-    { username: foundUser.username },
+    { email: foundUser.email },
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: "1d" }
   );
@@ -49,8 +50,8 @@ const login = asyncHandler(async (req, res) => {
     maxAge: 7 * 24 * 60 * 60 * 1000, // cookie expiry: set to match 7d
   });
 
-  //send accessToken containing username and roles
-  res.json({ accessToken });
+  //send accessToken containing email and roles
+  res.json({ accessToken: accessToken, foundUser });
 });
 
 // @desc   Refresh
@@ -58,7 +59,7 @@ const login = asyncHandler(async (req, res) => {
 // @access Public - becouse access token has expired
 const refresh = asyncHandler(async (req, res) => {
   const cookies = req.cookies;
-  if (!cookies?.jwt) return res.status(401).json({ message: "Unauthorized" });
+  if (!cookies?.jwt) return res.status(401).json({ message: "Unauthorized3" });
 
   const refreshToken = cookies.jwt;
 
@@ -68,14 +69,14 @@ const refresh = asyncHandler(async (req, res) => {
     asyncHandler(async (err, decoded) => {
       if (err) return res.status(403).json({ message: "Forbidden" });
 
-      const foundUser = await User.findOne({ username: decoded.username });
+      const foundUser = await User.findOne({ email: decoded.email });
 
-      if (!foundUser) return res.status(401).json({ message: "Unauthorized" });
+      if (!foundUser) return res.status(401).json({ message: "Unauthorized4" });
 
       const accessToken = jwt.sign(
         {
           userInfo: {
-            username: foundUser.username,
+            email: foundUser.email,
             roles: foundUser.roles,
           },
         },

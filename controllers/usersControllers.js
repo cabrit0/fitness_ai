@@ -17,12 +17,13 @@ const getAllUsers = asyncHandler(async (req, res) => {
 // @route  POST /users
 // @Access Private
 const createNewUser = asyncHandler(async (req, res) => {
-  const { username, password, roles, altura, peso, sexo, idade } = req.body;
+  const { username, password, email, roles, altura, peso, sexo, idade } = req.body;
 
   //confirm data
   if (
     !username ||
     !password ||
+    !email ||
     !Array.isArray(roles) ||
     !roles.length ||
     !altura ||
@@ -32,6 +33,8 @@ const createNewUser = asyncHandler(async (req, res) => {
   ) {
     return res.status(400).json({ message: "All fields must be provided" });
   }
+
+  console.log(username, password, email, roles, altura, peso, sexo, idade)
 
   //Check duplicates      ** use .exec() when async/await and receiving data
   const duplicate = await User.findOne({ username }).lean().exec();
@@ -45,6 +48,7 @@ const createNewUser = asyncHandler(async (req, res) => {
 
   const userObject = {
     username,
+    email,
     password: hashedPwd,
     roles,
     altura,
