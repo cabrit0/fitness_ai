@@ -7,6 +7,7 @@ const asyncHandler = require("express-async-handler");
 // @route  POST /auth
 // @access Public
 const login = asyncHandler(async (req, res) => {
+  console.log('test')
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -22,9 +23,10 @@ const login = asyncHandler(async (req, res) => {
   }
 
   const match = await bcrypt.compare(password, foundUser.password);
-
+  console.log(foundUser);
+  
   if (!match) return res.status(401).json({ message: "Unauthorized2" });
-
+  
   const accessToken = jwt.sign(
     {
       userInfo: {
@@ -51,6 +53,7 @@ const login = asyncHandler(async (req, res) => {
   });
 
   //send accessToken containing email and roles
+
   res.json({ accessToken, foundUser });
 });
 
@@ -83,7 +86,8 @@ const refresh = asyncHandler(async (req, res) => {
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: "1m" }
       );
-      res.json({ accessToken });
+      //console.log(foundUser)
+      res.json({ accessToken, foundUser });
     })
   );
 });
