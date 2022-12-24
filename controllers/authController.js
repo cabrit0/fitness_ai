@@ -51,7 +51,7 @@ const login = asyncHandler(async (req, res) => {
   });
 
   //send accessToken containing email and roles
-  res.json({ accessToken: accessToken, foundUser });
+  res.json({ accessToken, foundUser });
 });
 
 // @desc   Refresh
