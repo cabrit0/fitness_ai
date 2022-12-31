@@ -10,6 +10,6 @@ router
   .post(WorkoutsExercises.createWorkout)
   .patch(WorkoutsExercises.updateExercise)
   .delete(WorkoutsExercises.deleteExercise);
-router.delete("/workouts/:workoutId", WorkoutsExercises.deleteWorkout);
+router.delete("/workouts/", WorkoutsExercises.deleteWorkout);
 
 module.exports = router;
