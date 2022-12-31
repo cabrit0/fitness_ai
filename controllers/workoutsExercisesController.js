@@ -5,8 +5,9 @@ const User = require("../models/User");
 // @route  GET /user/workouts&exercises
 // @Access Private
 const getAllWorkouts = asyncHandler(async (req, res) => {
+  console.log(req.query.id)
   // Find the user by their ID
-  const user = await User.findById(req.body.id);
+  const user = await User.findById(req.query.id);
   if (!user) {
     return res.status(404).send({ error: "User not found" });
   }
