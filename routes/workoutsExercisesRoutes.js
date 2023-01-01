@@ -8,7 +8,7 @@ router
   .route("/")
   .get(WorkoutsExercises.getAllWorkouts)
   .post(WorkoutsExercises.createWorkout)
-  .patch(WorkoutsExercises.updateExercise)
+  .patch(WorkoutsExercises.updateWorkout)
   .delete(WorkoutsExercises.deleteExercise);
 router.delete("/workouts/", WorkoutsExercises.deleteWorkout);
 

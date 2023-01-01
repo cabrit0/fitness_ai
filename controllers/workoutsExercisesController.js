@@ -5,7 +5,7 @@ const User = require("../models/User");
 // @route  GET /user/workouts&exercises
 // @Access Private
 const getAllWorkouts = asyncHandler(async (req, res) => {
-  console.log(req.query.id)
+  console.log(req.query.id);
   // Find the user by their ID
   const user = await User.findById(req.query.id);
   if (!user) {
@@ -30,10 +30,10 @@ const createWorkout = asyncHandler(async (req, res) => {
   res.json(user.workouts);
 });
 
-// @desc   Update exercise
+// @desc   Update workout
 // @route  PATCH /user/workouts&exercises
 // @Access Private
-const updateExercise = asyncHandler(async (req, res) => {
+const updateWorkout = asyncHandler(async (req, res) => {
   // Find the user by their ID
   const user = await User.findById(req.body.id);
   if (!user) {
@@ -45,21 +45,12 @@ const updateExercise = asyncHandler(async (req, res) => {
   if (!workout) {
     return res.status(404).send({ error: "Workout not found" });
   }
-  req.body.exercises.map((exerciseData) => {
-    // Find the exercise by its ID
-    const exercise = workout.exercises.find(
-      (exercise) => exercise.id === exerciseData.exerciseId
-    );
-    //console.log(req.body.exercises);
-    //console.log(exerciseData.exerciseId, workout.exercises.id, exercise);
 
-    // Update the exercise with the new data
-    exercise.name = exerciseData.name;
-    exercise.bodyPart = exerciseData.bodyPart;
-    exercise.target = exerciseData.target;
-    exercise.equipment = exerciseData.equipment;
-    exercise.animatedGif = exerciseData.animatedGif;
-  });
+  // Update the workout with the new data
+  workout.name = req.body.name;
+  workout.description = req.body.description;
+  workout.day = req.body.day;
+  workout.exercises = req.body.exercises;
 
   // Save the user document
   await user.save();
@@ -123,7 +114,7 @@ const deleteWorkout = asyncHandler(async (req, res) => {
 module.exports = {
   getAllWorkouts,
   createWorkout,
-  updateExercise,
+  updateWorkout,
   deleteExercise,
   deleteWorkout,
 };
