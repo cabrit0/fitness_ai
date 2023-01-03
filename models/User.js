@@ -92,6 +92,9 @@ const userSchema = new mongoose.Schema(
           type: Number,
           required: true,
         },
+        calendarDate: {
+          type: Date,
+        },
       },
     ],
   },

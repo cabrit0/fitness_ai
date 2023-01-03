@@ -28,6 +28,7 @@ app.use("/api/v1/auth", require("./routes/authRoutes"));
 app.use("/api/v1/users", require("./routes/userRoutes"));
 app.use("/api/v1/user/activities", require("./routes/activityRoutes"));
 app.use("/api/v1/exercises", require("./routes/exercisesRoutes"));
+app.use("/api/v1/user/calendarOptions", require("./routes/calendarRoutes"));
 app.use(
   "/api/v1/user/workouts&exercises",
   require("./routes/workoutsExercisesRoutes")
