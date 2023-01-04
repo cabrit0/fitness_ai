@@ -8,5 +8,6 @@ router.use(verifyJWT);
 
 router.route("/workouts").post(calendarHandler.getCalendarWorkouts);
 router.route("/assignWorkout").post(calendarHandler.assignWorkoutToCalendar);
+router.route("/removeWorkout").delete(calendarHandler.removeWorkoutFromCalendar);
 
 module.exports = router;
