@@ -17,7 +17,17 @@ const getAllUsers = asyncHandler(async (req, res) => {
 // @route  POST /users
 // @Access Private
 const createNewUser = asyncHandler(async (req, res) => {
-  const { username, password, email, roles, altura, peso, sexo, idade, personalTrainer } = req.body;
+  const {
+    username,
+    password,
+    email,
+    roles,
+    altura,
+    peso,
+    sexo,
+    idade,
+    personalTrainer,
+  } = req.body;
 
   //confirm data
   if (
@@ -72,14 +82,25 @@ const createNewUser = asyncHandler(async (req, res) => {
 // @route  PATCH /users
 // @Access Private
 const updateUser = asyncHandler(async (req, res) => {
-  const { id, username, roles, active, password, personalTrainer, sexo, peso, altura, idade, } = req.body;
+  const {
+    id,
+    username,
+    roles,
+    active,
+    password,
+    personalTrainer,
+    sexo,
+    peso,
+    altura,
+    idade,
+  } = req.body;
   console.log(req.body);
 
   //confirm data
   if (
     !id ||
     !username ||
-    !Array.isArray(roles) ||
+    !roles ||
     !roles.length ||
     typeof active !== "boolean"
   ) {
@@ -141,4 +162,43 @@ const deleteUser = asyncHandler(async (req, res) => {
   res.json(reply);
 });
 
-module.exports = { getAllUsers, createNewUser, updateUser, deleteUser };
+// @desc   Get user by name
+// @route  GET /users
+// @Access Private
+const getUserByName = asyncHandler(async (req, res) => {
+  const { name } = req.body;
+  //console.log(name);
+  // Check if user exists
+  const user = await User.findOne({ username: name })
+    .select("-password")
+    .lean();
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  res.json(user);
+});
+
+// @desc   Get user by ID
+// @route  GET /users
+// @Access Private
+const getUserById = asyncHandler(async (req, res) => {
+  const { id } = req.query;
+  console.log(req.query);
+  // Check if user exists
+  const user = await User.findById(id).select("-password").lean();
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  res.json(user);
+});
+
+module.exports = {
+  getAllUsers,
+  createNewUser,
+  updateUser,
+  deleteUser,
+  getUserById,
+  getUserByName,
+};
