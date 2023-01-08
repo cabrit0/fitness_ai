@@ -145,7 +145,8 @@ const updateUser = asyncHandler(async (req, res) => {
 // @route  DELETE /users
 // @Access Private
 const deleteUser = asyncHandler(async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.query;
+  console.log(id);
   if (!id) {
     return res.status(400).json({ message: "User ID Required" });
   }
@@ -156,7 +157,7 @@ const deleteUser = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "User not found" });
   }
 
-  const result = await User.deleteOne();
+  const result = await user.remove();
   const reply = `Username ${result.username} with ID ${result._id} deleted`;
 
   res.json(reply);
