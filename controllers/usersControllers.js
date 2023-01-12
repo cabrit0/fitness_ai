@@ -85,6 +85,7 @@ const updateUser = asyncHandler(async (req, res) => {
   const {
     id,
     username,
+    email,
     roles,
     active,
     password,
@@ -123,6 +124,7 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 
   user.username = username;
+  user.email = email;
   user.roles = roles;
   user.active = active;
   user.personalTrainer = req.body.personalTrainer;
