@@ -4,11 +4,14 @@ const usersController = require("../controllers/usersControllers");
 const workoutsExercisesController = require("../controllers/workoutsExercisesController");
 const verifyJWT = require("../middleware/verifyJWT");
 
-//router.use(verifyJWT);
+// Rota pública para criação de contas
+router.post("/", usersController.createNewUser);
+
+// Rotas protegidas
+router.use(verifyJWT);
 router
   .route("/")
   .get(usersController.getAllUsers)
-  .post(usersController.createNewUser)
   .patch(usersController.updateUser)
   .delete(usersController.deleteUser);
 

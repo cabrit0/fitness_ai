@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: fitness-ai-api
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URI
+        sync: false  # Será configurado manualmente no dashboard do Render
+      - key: ACCESS_TOKEN_SECRET
+        generateValue: true
+      - key: REFRESH_TOKEN_SECRET
+        generateValue: true
+      - key: RAPIDAPI_KEY
+        sync: false  # Será configurado manualmente se necessário

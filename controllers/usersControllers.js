@@ -135,7 +135,7 @@ const updateUser = asyncHandler(async (req, res) => {
 
   if (password) {
     //hash password
-    user.password = await bcrypt(password, 10);
+    user.password = await bcrypt.hash(password, 10);
   }
 
   const updatedUser = await user.save();
@@ -159,7 +159,7 @@ const deleteUser = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "User not found" });
   }
 
-  const result = await user.remove();
+  const result = await User.findByIdAndDelete(id);
   const reply = `Username ${result.username} with ID ${result._id} deleted`;
 
   res.json(reply);

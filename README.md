@@ -5,9 +5,26 @@ Uma API Node.js/Express para gestão de fitness com integração à ExerciseDB A
 ## 🚀 Funcionalidades
 
 - Autenticação de utilizadores com JWT
+- **Conta de teste automática sempre ativa**
 - Gestão de atividades e treinos
 - Integração com ExerciseDB API para obter exercícios
 - Filtros por parte do corpo, músculo alvo e equipamento
+
+## 🧪 Conta de Teste Automática
+
+O sistema mantém automaticamente uma conta de teste sempre ativa:
+
+- **Email**: `test@gym.pt`
+- **Password**: `testUser`
+- **Status**: Sempre ativo e disponível
+
+### ✅ Funcionamento Automático
+A conta é verificada/criada automaticamente sempre que o servidor inicia.
+
+### 🔧 Verificação Manual
+```bash
+npm run seed:test
+```
 
 ## 🔧 Configuração
 
